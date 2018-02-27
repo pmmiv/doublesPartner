@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservation Page</title>
+
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="jumbotron">
+      <h1 class="text-center"><span class="glyphicon glyphicon-fire"></span> Game, Set, Matchmaker</h1>
+      <hr>
+      <h2 class="text-center">Fill out the survey to find your next doubles partner!</h2>
+      <br>
+
+      <div class="text-center">
+        <a href="/"><button type="button" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-home"></span></button></a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+
+        <!-- Reservation Page -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">Tell us your name, upload a picture, and tell us about your playstyle!</h4>
+          </div>
+          <div class="panel-body">
+
+            <form role="form">
+
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name">
+              </div>
+
+              <div class="form-group">
+                <label for="img">Image URL</label>
+                <input type="text" class="form-control" id="img">
+              </div>
+
+              <div class="form-group">
+                <label for="question1">Where do you like to play?</label>
+                <select class="form-control" id="question1">
+                  <option> </option>
+                  <option value="1">1 - At the net</option>
+                  <option value="2">2</option>
+                  <option value="3">3 - Anywhere</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - At the baseline</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="question2">What kind of shots do you prefer to take?</label>
+                <select class="form-control" id="question2">
+                  <option> </option>
+                  <option value="1">1 - Powerful</option>
+                  <option value="2">2</option>
+                  <option value="3">3 - Balanced</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - Technical</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="question3">How do you like to approach a match?</label>
+                <select class="form-control" id="question3">
+                  <option> </option>
+                  <option value="1">1 - With an aggressive mindset</option>
+                  <option value="2">2</option>
+                  <option value="3">3 - Mix it up</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - With a patient mindset</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="question4">How do you typically hit the ball?</label>
+                <select class="form-control" id="question4">
+                  <option> </option>
+                  <option value="1">1 - With spin</option>
+                  <option value="2">2</option>
+                  <option value="3">3 - Mix it up</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - flat</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="question5">When you're facing break point, what are you thinking?</label>
+                <select class="form-control" id="question5">
+                  <option> </option>
+                  <option value="1">1 - I should conserve energy, so I can break back.</option>
+                  <option value="2">2</option>
+                  <option value="3">3 - Depends on the situation.</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - I should stand tall. I will not give up this game.</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="question6">How do you approach your second serve?</label>
+                <select class="form-control" id="question6">
+                  <option> </option>
+                  <option value="1">1 - Conservatively. Just play the ball.</option>
+                  <option value="2">2</option>
+                  <option value="3">3 - Depends on the situation.</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - No risk no reward. I can still ace them.</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary submit">Submit</button>
+          
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+<!--     <footer class="footer">
+      <div class="container">
+        <p><a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API Wait List</a> | <a href="https://github.com/afhaque/HotRestaurant">GitHub Repo</a></p>
+      </div>
+    </footer> -->
+
+  </div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+    // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
+    // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
+    // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
+    // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
+
+    $(".submit").on("click", function(event) {
+      event.preventDefault();
+
+      // Here we grab the form elements
+      var newPlayer = {
+        name: $("#name").val().trim(),
+        imgUrl: $("#img").val().trim(),
+        resVals: []
+      };
+
+      function questionResponse () {
+        for (i=1;i<7;i++) {
+            var value = $("#question"+i).val();
+            newPlayer.resVals.push(value);
+          };
+      };
+
+      questionResponse();
+      console.log(newPlayer)
+
+      // This line is the magic. It"s very similar to the standard ajax function we used.
+      // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
+      // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
+      // depending on if a tables is available or not.
+      var currentURL = window.location.origin;
+
+
+      $.post("/api/survey", newPlayer, function(data) {
+        console.log(data);
+      });
+
+      
+
+    });
+
+</script>
